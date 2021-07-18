@@ -4,7 +4,7 @@ DIR_S = ./src
 
 DIR_O = ./obj
 
-SOURCES		=  main.c utils.c parsing.c
+SOURCES		=  main.c utils.c parsing.c init.c
 
 SRCS = $(addprefix $(DIR_S)/,${SOURCES})
 
@@ -19,29 +19,32 @@ RM			= rm -f
 FLAGS		= -g
 #-Wall -Wextra -Werror
 
-all:	dir $(NAME)
+all:	dir $(NAME) done
 
 dir:
-	@echo "\033[0;32m"
+	@echo "\033[0;35m\b"
 	mkdir -p obj
+	@echo "\033[0;35m"
+done:
+	@echo "\n\033[0;32m|___Done___|"
+
 $(NAME): $(OBJS)
 		@echo "\033[0;35m"
 		$(CC) $(OBJS) -o $(NAME)
 		chmod 777 $(NAME)
 
 $(DIR_O)/%.o: $(DIR_S)/%.c $(INCL)
+		@echo "\033[0;34m\b"
 		 $(CC) $(FLAGS)  -c $< -o $@
 
 clean:
+		@echo "\033[0;33m\b"
 		$(RM) $(OBJS)
-		make clean -C ./libft/
-		make clean -C ./mlx/
+		rm -rf $(DIR_O)
 
 fclean: clean
+		@echo "\033[0;31m"
 		$(RM) $(NAME)
-		$(RM) libmlx.dylib
-		$(RM) ./mlx/libmlx.dylib
-		make fclean -C ./libft/
 
 re:		fclean all
 
@@ -52,4 +55,4 @@ norm:
 	@norminette includes/*.h
 
 .PHONY:
-		all, clean, fclean, re
+		all, clean, fclean, re, dir, norm
