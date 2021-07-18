@@ -1,10 +1,10 @@
-#include "philo.h"
+#include "../includes/philo.h"
 
 void *print_id(void *philo)
 {
 	char *id;
 	pthread_mutex_lock(&mutex);
-	id = ft_itoa(((t_philo*)philo)->id);
+	id = ft_itoa(((t_philo *) philo)->id);
 //	printf("%d\n", ((t_philo*)philo)->id);
 	write(1, id, ft_strlen(id));
 	write(1, "\n", 1);
@@ -17,7 +17,7 @@ void init_philo(t_philo **philo, int nb)
 	int i;
 
 	i = 0;
-	while(i < nb)
+	while (i < nb)
 	{
 		philo[i]->id = i + 1;
 		i++;
@@ -27,26 +27,34 @@ void init_philo(t_philo **philo, int nb)
 
 int main(int argc, char **argv)
 {
-	int philo_nb;
+	t_arg arg;
 	int i;
-	t_philo **philo;
+	t_philo *philo;
 
-	philo_nb = ft_atoi(argv[1]);
-	philo = (t_philo**)malloc(sizeof(t_philo*) * (philo_nb + 1));
+	if (parsing(&arg, argv, argc) == 1)
+		return (-1);
+
+
+
+	philo = (t_philo *) malloc(sizeof(t_philo) * (arg.nb));
 	i = 0;
-	while (i < philo_nb)
+	while (i < arg.nb)
 	{
-		philo[i] = (t_philo *)malloc(sizeof(t_philo));
-		philo[i]->id = i + 1;
+		philo[i].id = i + 1;
 		i++;
 	}
-	philo[i] = NULL;
 	pthread_mutex_init(&mutex, NULL);
 	i = 0;
-	while (i < philo_nb)
+	while (i < arg.nb)
 	{
-		pthread_create(&(philo[i]->tr), NULL, print_id, (void *)(philo[i]));
+		pthread_create(&(philo[i].tr), NULL, print_id, (void *) (&philo[i]));
 		i++;
 	}
-	usleep(1000000);
+	i = 0;
+	while (i < arg.nb)
+	{
+		pthread_join(philo[i].tr, 0);
+		i++;
+	}
+	return 0;
 }
