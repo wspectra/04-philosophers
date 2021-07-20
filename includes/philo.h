@@ -16,6 +16,19 @@
 # include <stdio.h>
 # include <pthread.h>
 # include <stdlib.h>
+#include <sys/time.h>
+
+typedef struct s_philo
+{
+	int				id;
+	int 			left;
+	int 			right;
+	pthread_t		tr;
+	uint64_t		t_eat;
+	int 			is_eating;
+	int				must_eat;
+	pthread_mutex_t eat;
+}				t_philo;
 
 typedef struct s_arg
 {
@@ -24,20 +37,18 @@ typedef struct s_arg
 	int	t_eat;
 	int	t_sleep;
 	int	nb_eat;
+	uint64_t	t_start;
+	pthread_mutex_t *forks;
+	pthread_mutex_t	print;
+	pthread_mutex_t eat;
+	int time;
 }				t_arg;
 
-typedef struct s_philo
-{
-	int				id;
-	pthread_mutex_t	*left;
-	pthread_mutex_t	*right;
-	pthread_t		tr;
 
-}				t_philo;
 //utils
 int				ft_atoi(const char *str);
-char			*ft_itoa(int n);
-int				ft_strlen(const char *str);
+uint64_t		get_time(void);
+void			accurate_usleep(int tine);
 //parsing
 int				parsing(t_arg *arg, char **argv, int argc);
 //init

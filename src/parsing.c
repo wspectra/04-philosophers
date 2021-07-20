@@ -45,6 +45,8 @@ int	parsing(t_arg *arg, char **argv, int argc)
 	arg->t_eat = ft_atoi(argv[3]);
 	arg->t_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		arg->nb = ft_atoi(argv[5]);
+		arg->nb_eat = ft_atoi(argv[5]);
+	else
+		arg->nb_eat = -1;
 	return (0);
 }

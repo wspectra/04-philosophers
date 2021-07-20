@@ -23,6 +23,7 @@ t_philo	*philo_init(t_arg arg, pthread_mutex_t *forks)
 {
 	t_philo	*philo;
 	int		i;
+	pthread_mutex_t *tmp;
 
 	philo = (t_philo *) malloc(sizeof(t_philo) * (arg.nb));
 	if (!philo)
@@ -30,16 +31,29 @@ t_philo	*philo_init(t_arg arg, pthread_mutex_t *forks)
 	i = 0;
 	while (i < arg.nb)
 	{
-		philo[i].id = i + 1;
-		if (i == arg.nb - 1)
-			philo[i].left = forks;
+		philo[i].id = i;
+		if (philo[i].id  % 2 == 0)
+		{
+			philo[i].left = philo[i].id;
+			philo[i].right = (philo[i].id + 1) % arg.nb;
+		}
 		else
-			philo[i].left = forks + i;
-		if (i - 1 == -1)
-			philo[i].right = forks + (arg.nb - 1);
-		else
-			philo[i].right = forks + (i - 1);
+		{
+			philo[i].right = philo[i].id;
+			philo[i].left = (philo[i].id + 1) % arg.nb;
+		}
 		i++;
 	}
+	philo->must_eat = arg.nb_eat;
+	philo->is_eating = 0;
 	return (philo);
+}
+
+void accurate_usleep(int tine)
+{
+	uint64_t res;
+
+	res = get_time() + (uint64_t)time;
+	while(res > get_time())
+		usleep(100);
 }
