@@ -32,7 +32,7 @@ t_philo	*philo_init(t_arg arg, pthread_mutex_t *forks)
 	while (i < arg.nb)
 	{
 		philo[i].id = i;
-		if (philo[i].id  % 2 == 0)
+		if (philo[i].id % 2 == 0)
 		{
 			philo[i].left = philo[i].id;
 			philo[i].right = (philo[i].id + 1) % arg.nb;
@@ -49,7 +49,7 @@ t_philo	*philo_init(t_arg arg, pthread_mutex_t *forks)
 	return (philo);
 }
 
-void accurate_usleep(int tine)
+void accurate_usleep(uint64_t time)
 {
 	uint64_t res;
 
@@ -57,3 +57,6 @@ void accurate_usleep(int tine)
 	while(res > get_time())
 		usleep(100);
 }
+
+
+

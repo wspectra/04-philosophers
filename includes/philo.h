@@ -48,7 +48,7 @@ typedef struct s_arg
 //utils
 int				ft_atoi(const char *str);
 uint64_t		get_time(void);
-void			accurate_usleep(int tine);
+void accurate_usleep(uint64_t time);
 //parsing
 int				parsing(t_arg *arg, char **argv, int argc);
 //init

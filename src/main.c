@@ -53,19 +53,19 @@ void *philosophers(void *strct)
 
 		philo->t_eat = get_time();
 		print_status('e', philo->id, 0);
-//		accurate_usleep(get_struct()->t_eat * 1000);
-		usleep(get_struct()->t_eat * 1000);
+		accurate_usleep(get_struct()->t_eat);
+//		usleep(get_struct()->t_eat * 1000);
 		philo->is_eating++;
 
 
 
-
-		pthread_mutex_unlock(&(get_struct()->forks[philo->right]));
 		pthread_mutex_unlock(&(get_struct()->forks[philo->left]));
+		pthread_mutex_unlock(&(get_struct()->forks[philo->right]));
+
 
 		print_status('s', philo->id, 0);
-//		accurate_usleep(get_struct()->t_sleep * 1000);
-		usleep(get_struct()->t_sleep * 1000);
+		accurate_usleep(get_struct()->t_sleep);
+//		usleep(get_struct()->t_sleep * 1000);
 		print_status('t', philo->id, 0);
 
 	}
@@ -105,13 +105,15 @@ int main(int argc, char **argv)
 	{
 		pthread_create(&(philo[0].tr), NULL, philosophers,(void *) (&philo[i]));
 		i++;
-		usleep(1000);
+//		usleep(1000);
+		accurate_usleep(100);
 	}
+
 	while (1)
 	{
 		i = 0;
 		total = 0;
-		while (i < get_struct()->nb - 1)
+		while (i <= get_struct()->nb - 1)
 		{
 			if (get_struct()->t_die < get_time() - philo[i].t_eat)
 			{
