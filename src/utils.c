@@ -1,30 +1,75 @@
 #include "../includes/philo.h"
 
-int	ft_atoi(const char *str)
+static char	*count_sp_signs(const char *str, int *sign, int *count)
 {
-	int					sign;
-	unsigned long long	res;
-	int					i;
-
-	sign = 0;
-	res = 0;
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' ||
-					  str[i] == '\v' || str[i] == '\f' || str[i] == '\r'))
-		i++;
-	sign = str[i] == '-' ? -1 : 1;
-	i = str[i] == '+' ? i + 1 : i;
-	i = sign == -1 ? i + 1 : i;
-	while (str[i] >= '0' && str[i] <= '9')
-		res = res * 10 + str[i++] - 48;
-	if (res > 9223372036854775807)
-		return (sign == 1 ? -1 : 0);
-	return (res * sign);
+	if (str == NULL)
+		return (NULL);
+	while (*str == ' ' || *str == '\t' || *str == '\r'
+		   || *str == '\v' || *str == '\n' || *str == '\f'
+		   || *str == '-' || *str == '+')
+	{
+		if (*str == '-')
+		{
+			(*sign)++;
+			if (!(*(str + 1) >= '0' && *(str + 1) <= '9'))
+				return (NULL);
+		}
+		if (*str == '+')
+		{
+			(*count)++;
+		}
+		str++;
+	}
+	return ((char *)str);
 }
 
-uint64_t get_time(void)
+int	ft_atoi(const char *str)
 {
-	static struct timeval  tv;
+	long long int		res;
+	int					sign;
+	int					count;
+	int					cdigits;
+
+	res = 0;
+	sign = 0;
+	count = 0;
+	cdigits = -1;
+	str = count_sp_signs(str, &sign, &count);
+	if (str == NULL)
+		return (0);
+	if (count + sign > 1)
+		return (0);
+	while ((*str >= '0' && *str <= '9') && (++cdigits >= 0))
+		res = res * 10 + (*str++ - '0');
+	if (cdigits > 19 && sign == 0)
+		return (-1);
+	if (cdigits > 19 && sign == 1)
+		return (0);
+	if (sign == 1)
+		return (-res);
+	return (res);
+}
+
+uint64_t	get_time(void)
+{
+	static struct timeval	tv;
+
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * (uint64_t)1000) + (tv.tv_usec / 1000));
+}
+
+t_arg	*get_struct(void)
+{
+	static t_arg	arg;
+
+	return (&arg);
+}
+
+void	accurate_usleep(uint64_t time)
+{
+	uint64_t	res;
+
+	res = get_time() + (uint64_t)time;
+	while (res > get_time())
+		usleep(1);
 }

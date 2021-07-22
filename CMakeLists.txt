@@ -7,4 +7,5 @@ add_executable(04_philosophers
         src/main.c
         src/utils.c
         src/parsing.c
-        src/init.c)
+        src/init.c
+        src/print.c)

@@ -1,6 +1,6 @@
 #include "../includes/philo.h"
 
-pthread_mutex_t	*forks_init(t_arg arg)
+pthread_mutex_t	*mutex_init(t_arg arg)
 {
 	pthread_mutex_t	*forks;
 	int				i;
@@ -21,9 +21,9 @@ pthread_mutex_t	*forks_init(t_arg arg)
 
 t_philo	*philo_init(t_arg arg, pthread_mutex_t *forks)
 {
-	t_philo	*philo;
-	int		i;
-	pthread_mutex_t *tmp;
+	t_philo			*philo;
+	int				i;
+	pthread_mutex_t	*tmp;
 
 	philo = (t_philo *) malloc(sizeof(t_philo) * (arg.nb));
 	if (!philo)
@@ -44,19 +44,22 @@ t_philo	*philo_init(t_arg arg, pthread_mutex_t *forks)
 		}
 		i++;
 	}
-	philo->must_eat = arg.nb_eat;
 	philo->is_eating = 0;
 	return (philo);
 }
 
-void accurate_usleep(uint64_t time)
+void	threads_init(t_philo *philo)
 {
-	uint64_t res;
+	int	i;
 
-	res = get_time() + (uint64_t)time;
-	while(res > get_time())
-		usleep(100);
+	i = 0;
+	get_struct()->t_start = get_time();
+	while (i < get_struct()->nb)
+	{
+		pthread_create(&(philo[0].tr), NULL, philosophers,
+			(void *)(&philo[i]));
+		philo[i].t_eat = get_time();
+		i++;
+		accurate_usleep(1);
+	}
 }
-
-
-

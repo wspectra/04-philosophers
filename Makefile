@@ -4,7 +4,7 @@ DIR_S = ./src
 
 DIR_O = ./obj
 
-SOURCES		=  main.c utils.c parsing.c init.c
+SOURCES		=  main.c utils.c parsing.c init.c print.c
 
 SRCS = $(addprefix $(DIR_S)/,${SOURCES})
 
