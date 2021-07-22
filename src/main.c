@@ -47,7 +47,7 @@ int	check_status(t_philo *philo, int i, int total)
 			pthread_mutex_lock(&(get_struct()->eat[philo[i].id]));
 			if (get_struct()->t_die < get_time() - philo[i].t_eat)
 			{
-				print_status('d', philo[i].id, 0);
+				print_status('d', philo[i].id + 1, 0);
 				return (0);
 			}
 			pthread_mutex_unlock(&(get_struct()->eat[philo[i].id]));
@@ -58,7 +58,7 @@ int	check_status(t_philo *philo, int i, int total)
 		}
 		if (get_struct()->nb_eat > 0 && total == get_struct()->nb - 1)
 		{
-			print_status('A', philo[i].id, 0);
+			print_status('A', philo[i].id + 1, 0);
 			return (0);
 		}
 	}
