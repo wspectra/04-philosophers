@@ -1,6 +1,6 @@
 ✔️ philoshopers
 This project is aim to understand multi-threads programming with the use of mutex and this project is a part methodology learning students from 42 school (21 school in Moscow). Problem description:
-
+  
 Problem description
 Consider n philosophers who spend their lives thinking and eating. The philosophers share a circular table surrounded by five chairs, each belonging to one philosopher. In the center of the table is a bowl of rice, and the table is laid with five single chopsticks. When a philosopher thinks, he does not interact with her colleagues. From time to time, a philosopher gets hungry and tries to pick up the two chopsticks that are closest to him (the chopsticksthat are between his and her left and right neighbors). A philosopher may pick up only one chopstick at a time. Obviously, he cannot pick up a chopstick that is already in the hand of a neighbor. When a hungry philosopher has both her chopsticks at the same time, he eats without releasing the chopsticks. When he is finished eating, he puts down both chopsticks and starts thinking again.
 
